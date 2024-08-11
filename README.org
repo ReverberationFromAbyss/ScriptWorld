@@ -8,9 +8,9 @@
 
 #+seq_todo: todo(t@) feature(F@) issue(i!/@) wip(w@) fixme(f!/@) knwon(k!/@) | done(d!) canceled(c!/@) abort(a!/@)
 
-* Project: Scripting World
+* Project: Script World
 
-A zero-player Game about the World instructed by scripts.
+A script instructed zero-player written in c++ with module.
 
 * Content
 #+TOC: tables
