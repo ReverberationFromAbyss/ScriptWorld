@@ -136,4 +136,107 @@ auto lua_register = [](lua_State *L, const char *n, lua_CFunction f) {
   return (lua_pushcfunction(L, (f)), lua_setglobal(L, (n)));
 };
 
+using lua::luaL_Reg;
+
+using lua::luaopen_base;
+using lua::luaopen_debug;
+using lua::luaopen_io;
+using lua::luaopen_math;
+using lua::luaopen_os;
+using lua::luaopen_package;
+using lua::luaopen_string;
+using lua::luaopen_table;
+
+using lua::luaL_addlstring;
+using lua::luaL_addstring;
+using lua::luaL_addvalue;
+using lua::luaL_argerror;
+using lua::luaL_buffinit;
+using lua::luaL_callmeta;
+using lua::luaL_checkany;
+using lua::luaL_checkstack;
+using lua::luaL_checktype;
+using lua::luaL_checkudata;
+using lua::luaL_error;
+using lua::luaL_findtable;
+using lua::luaL_gsub;
+using lua::luaL_optnumber;
+using lua::luaL_ref;
+using lua::luaL_register;
+using lua::luaL_typerror;
+using lua::luaL_unref;
+using lua::luaL_where;
+auto luaL_addchar = [](lua::luaL_Buffer *B, char c) {
+  ((void)((B)->p < ((B)->buffer + LUAL_BUFFERSIZE) || luaL_prepbuffer(B)),
+   (*(B)->p++ = (char)(c)));
+};
+using lua::luaL_addlstring;
+auto luaL_addsize = [](lua::luaL_Buffer *B, size_t n) {
+  return ((B)->p += (n));
+};
+using lua::luaL_addstring;
+using lua::luaL_addvalue;
+auto luaL_argcheck = [](lua_State *L, int cond, int numarg,
+                        const char *extramsg) {
+  return ((void)((cond) || luaL_argerror(L, (numarg), (extramsg))));
+};
+using lua::luaL_argerror;
+using lua::luaL_Buffer;
+using lua::luaL_buffinit;
+using lua::luaL_callmeta;
+using lua::luaL_checkany;
+using lua::luaL_checkinteger;
+auto luaL_checkint = [](lua_State *L, int n) {
+  return ((int)luaL_checkinteger(L, (n)));
+};
+auto luaL_checklong = [](lua_State *L, int n) {
+  return ((long)luaL_checkinteger(L, (n)));
+};
+using lua::luaL_checklstring;
+using lua::luaL_checknumber;
+using lua::luaL_checkoption;
+using lua::luaL_checkstack;
+auto luaL_checkstring = [](lua_State *L, int n) {
+  return (luaL_checklstring(L, (n), NULL));
+};
+using lua::luaL_checktype;
+using lua::luaL_checkudata;
+auto luaL_dofile = [](lua_State *L, const char *fn) {
+  return (luaL_loadfile(L, fn) || lua_pcall(L, 0, LUA_MULTRET, 0));
+};
+auto luaL_dostring = [](lua_State *L, const char *s) {
+  return (luaL_loadstring(L, s) || lua_pcall(L, 0, LUA_MULTRET, 0));
+};
+using lua::lua_getmetatable;
+using lua::luaL_error;
+using lua::luaL_getmetafield;
+using lua::luaL_gsub;
+using lua::luaL_loadbuffer;
+using lua::luaL_loadfile;
+using lua::luaL_loadstring;
+using lua::luaL_newmetatable;
+using lua::luaL_optinteger;
+auto luaL_optint = [](lua_State *L, int n, lua_Integer d) {
+  return ((int)luaL_optinteger(L, (n), (d)));
+};
+auto luaL_optlong = [](lua_State *L, int n, long d) {
+  return ((long)luaL_optinteger(L, (n), (d)));
+};
+using lua::luaL_optlstring;
+using lua::luaL_optnumber;
+auto luaL_optstring = [](lua_State *L, int n, const char *d) {
+  return (luaL_optlstring(L, (n), (d), NULL));
+};
+using lua::luaL_prepbuffer;
+using lua::luaL_pushresult;
+using lua::luaL_ref;
+using lua::luaL_Reg;
+using lua::luaL_register;
+auto luaL_typename = [](lua_State *L, int i) {
+  return lua_typename(L, lua_type(L, (i)));
+};
+using lua::luaL_typerror;
+using lua::luaL_unref;
+using lua::luaL_where;
+
 } // namespace lua
