@@ -8,5 +8,6 @@ using namespace std;
 namespace ScriptingWorld {
 
 class Unit;
+class World;
 
 } // namespace ScriptingWorld

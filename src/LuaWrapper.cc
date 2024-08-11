@@ -1,3 +1,4 @@
+
 module;
 
 #ifdef __cplusplus
@@ -10,7 +11,7 @@ namespace lua {
 
 #include "lua.h"
 
-} // namespace lua
+}; // namespace lua
 
 #ifdef __cplusplus
 }
@@ -42,11 +43,11 @@ using lua::lua_pcall;
 using lua::lua_getfield;
 using lua::lua_setfield;
 
-std::function<void(lua_State *L, const char *name)> lua_getglobal =
+::std::function<void(lua_State *L, const char *name)> lua_getglobal =
     [](lua_State *L, const char *name) {
       lua_getfield(L, LUA_GLOBALSINDEX, name);
     };
-std::function<void(lua_State *L, const char *name)> lua_setglobal =
+::std::function<void(lua_State *L, const char *name)> lua_setglobal =
     [](lua_State *L, const char *name) {
       lua_setfield(L, LUA_GLOBALSINDEX, name);
     };
@@ -122,7 +123,7 @@ auto lua_pushcfunction = [](lua_State *L, lua_CFunction f) {
 using lua::lua_pushfstring;
 using lua::lua_pushinteger;
 auto lua_pushliteral = [](lua_State *L, const char *s) {
-  return lua_pushlstring(L, s, std::string(s).size() - 1);
+  return lua_pushlstring(L, s, ::std::string(s).size() - 1);
 };
 using lua::lua_pushlstring;
 using lua::lua_pushnil;

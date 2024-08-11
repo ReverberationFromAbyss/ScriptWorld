@@ -9,5 +9,6 @@ using namespace std;
 namespace ScriptingWorld {
 
 class World;
+class Unit;
 
 } // namespace ScriptingWorld

@@ -48,17 +48,5 @@ export void log(const char *fileName, const int lines, const char *loginfo) {
   }
 }
 
-export struct Position;
-
-struct Position {
-  using position_x_t = int;
-  using position_y_t = int;
-  position_x_t x;
-  position_y_t y;
-
-  Position(position_x_t x, position_y_t y) : x(x), y(y) {}
-  Position(void) : x(0), y(0) {}
-};
-
 } // namespace Utils
 } // namespace ScriptingWorld
