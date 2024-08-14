@@ -6,7 +6,7 @@
  * @brief
  */
 module;
-export module ScriptingWorld:Defination;
+export module ScriptWorld:Defination;
 import std;
 import std.compat;
 import Utils;
@@ -15,9 +15,11 @@ import ManyUtilsLibrary;
 
 using namespace std;
 
-namespace ScriptingWorld {
+namespace ScriptWorld {
 
 export struct Position;
+export class World;
+export class Unit;
 
 struct Position {
   using position_x_t = int;
@@ -28,9 +30,6 @@ struct Position {
   Position(position_x_t x, position_y_t y) : x(x), y(y) {}
   Position(void) : x(0), y(0) {}
 };
-export class World;
-
-export class Unit;
 
 /**
  * @class Unit
@@ -44,10 +43,10 @@ private:
   World *m_parent_{};
   Position m_pos_{};
 
-  lua::lua_State *m_luaVM_{};
+  static lua::lua_State *s_luaVM_;
 
-  int m_currentStatus_{false};
-  int m_nextStatus{false};
+  int m_currentStatus_{0};
+  int m_nextStatus{0};
 
 public:
   /// Methods
@@ -62,15 +61,22 @@ public:
   Unit &operator=(Unit &&obj) = default;
   Unit &operator=(const Unit &obj) = default;
 
-  static Unit *Create(Position pos);
+  static Unit *Create(World *parent, Position pos);
+
   bool Init(void) override;
   bool Init(World *parent, Position pos, int status = 0);
+  static bool InitLuaVM(void);
 
   int GetCurrentStatus(void);
   void SetCurrentStatus(int livingStatus);
+  Position GetPosition(void);
+
+  void EvaluateLua(void);
 
   void EvaluateNextStatus(void);
   void ForwardStatus(void);
+
+  World *GetParent(void);
 };
 
 class World final : public mul_std::IObject::__I_Object_ {
@@ -106,4 +112,4 @@ public:
   mul_std::IEnumerable::Array<Unit, 10, 10> &ExportMap(void);
 };
 
-} // namespace ScriptingWorld
+} // namespace ScriptWorld

@@ -1,14 +1,14 @@
 module;
-export module ScriptingWorld:World;
+export module ScriptWorld:World;
 import std;
 import Utils;
 import :Defination;
 
 using namespace std;
 
-namespace ScriptingWorld {
+namespace ScriptWorld {
 
 class World;
 class Unit;
 
-} // namespace ScriptingWorld
+} // namespace ScriptWorld

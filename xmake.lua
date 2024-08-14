@@ -23,7 +23,7 @@ target("lua-header", function()
 	add_headerfiles("lib/lua/**.h")
 end)
 
-target("ScriptingWorld", function()
+target("ScriptWorld", function()
 	set_kind("binary")
 	add_deps("lua")
 	add_includedirs("lib/lua")
