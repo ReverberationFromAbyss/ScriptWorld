@@ -15,7 +15,7 @@ public:
 protected:
 private:
 public:
-  virtual bool Init(void);
+  virtual bool Init(void) = 0;
 };
 
 } // namespace IObject

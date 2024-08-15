@@ -12,14 +12,15 @@ int main(int argc, const char *argv[]) {
     perror("luaL_newstate failed");
     return -1;
   }
+  ScriptWorld::Unit::InitLuaVM(L);
+  ScriptWorld::LuaBinding::luaopen_unit(L);
 
-  lua_pushstring(L, "Hello, Lua;");
-  lua_pushnumber(L, 20);
-  if (lua_isstring(L, 1)) {
-    cout << lua_tostring(L, 1) << endl;
-  }
-  if (lua_isnumber(L, 2)) {
-    cout << lua_tonumber(L, 2);
+  auto world = ScriptWorld::World::Create();
+
+  while (true) {
+    string str;
+    cin >> str;
+    luaL_dostring(L, str.data());
   }
 
   lua_close(L);

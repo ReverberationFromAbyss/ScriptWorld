@@ -86,7 +86,7 @@ protected:
       int tmp{0};
       auto p{args.begin()};
       for (int i = 0; i < args.size(); i++) {
-        auto dim = (dimensionInfo::sc_Dimensions_ - i - 1) >= 0
+        auto dim = (dimensionInfo::sc_Dimensions_ - i - 1) > 0
                        ? dimensionInfo::sc_DimensionInfo_
                              [dimensionInfo::sc_Dimensions_ - i - 1]
                        : 1;
@@ -113,7 +113,7 @@ protected:
       int tmp{0};
       auto p{args.begin()};
       for (int i = 0; i < args.size(); i++) {
-        auto dim = (dimensionInfo::sc_Dimensions_ - i - 1) >= 0
+        auto dim = (dimensionInfo::sc_Dimensions_ - i - 1) > 0
                        ? dimensionInfo::sc_DimensionInfo_
                              [dimensionInfo::sc_Dimensions_ - i - 1]
                        : 1;

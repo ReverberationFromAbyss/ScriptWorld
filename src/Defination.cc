@@ -54,7 +54,7 @@ protected:
 private:
 public:
   Unit();
-  ~Unit();
+  ~Unit() = default;
 
   Unit(Unit &&obj) = default;
   Unit(const Unit &obj) = default;
@@ -65,7 +65,7 @@ public:
 
   bool Init(void) override;
   bool Init(World *parent, Position pos, int status = 0);
-  static bool InitLuaVM(void);
+  static bool InitLuaVM(lua::lua_State *L);
 
   int GetCurrentStatus(void);
   void SetCurrentStatus(int livingStatus);
@@ -83,8 +83,8 @@ class World final : public mul_std::IObject::__I_Object_ {
   /// Variable & Type
 protected:
 private:
-  mul_std::IEnumerable::Array<Unit, 10, 10> m_map_;
-  Position m_mapScale_{};
+  mul_std::IEnumerable::Array<Unit *, 10, 10> m_map_;
+  Position m_mapScale_{Position(10, 10)};
 
 public:
   /// Methods
@@ -92,12 +92,12 @@ protected:
 private:
 public:
   World();
-  ~World();
+  ~World() = default;
 
-  World(World &&obj);
-  World(const World &obj);
-  World &operator=(World &&obj);
-  World &operator=(const World &obj);
+  World(World &&obj) = delete;
+  World(const World &obj) = delete;
+  World &operator=(World &&obj) = delete;
+  World &operator=(const World &obj) = delete;
 
   static World *Create(void);
   bool Init(void) override;

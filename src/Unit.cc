@@ -13,9 +13,11 @@ namespace ScriptWorld {
 class Unit;
 class World;
 
-lua_State *Unit::s_luaVM_{lua_open()};
+lua_State *Unit::s_luaVM_{nullptr};
 
-Unit::Unit() {}
+Unit::Unit() {
+  cout << "Unit constructed" << endl; // DEBUG:
+}
 
 bool Unit::Init(void) { return true; }
 
@@ -27,12 +29,18 @@ bool Unit::Init(World *parent, Position pos, int status) {
 }
 
 Unit *Unit::Create(World *parent, Position pos) {
-  auto tmp = new Unit();
-  if (!tmp->Init(parent, pos)) {
-    delete tmp;
+  auto tmp = (Unit **)lua::lua_newuserdata(s_luaVM_, sizeof(Unit));
+  *tmp = new Unit();
+  if (!(*tmp)->Init(parent, pos)) {
+    delete *tmp;
     return nullptr;
   }
-  return nullptr;
+
+  cout << "position: x: " << pos.x << "/y: " << pos.y << endl; // DEBUG:
+
+  luaL_getmetafield(s_luaVM_, Lua_Globalsindex, "scriptWorld.unit");
+  lua_setmetatable(s_luaVM_, -2);
+  return *tmp;
 }
 
 /**
@@ -40,7 +48,8 @@ Unit *Unit::Create(World *parent, Position pos) {
  *
  * @return bool
  */
-bool Unit::InitLuaVM(void) {
+bool Unit::InitLuaVM(lua_State *L) {
+  s_luaVM_ = L;
   luaL_openlibs(s_luaVM_);
 
   static const luaL_Reg lualibs[] = {
@@ -49,11 +58,10 @@ bool Unit::InitLuaVM(void) {
   const luaL_Reg *lib = lualibs;
 
   for (; lib->func != nullptr; lib++) {
-    lua_pushcfunction(s_luaVM_, lib->func);
+    utils::luaL_setfunc(s_luaVM_, *lib);
     lua_settop(s_luaVM_, 0);
   }
   return true;
-  // TODO: bind with lua
 }
 
 int Unit::GetCurrentStatus(void) { return m_currentStatus_; }
