@@ -35,6 +35,6 @@ World *World::Create(void) {
   return tmp;
 }
 
-Unit &World::GetUnit(Position pos) { return *m_map_.Ref({pos.x, pos.y}); }
+Unit &World::GetUnit(Position pos) { return *(*m_map_.At({pos.x, pos.y})); }
 
 } // namespace ScriptWorld

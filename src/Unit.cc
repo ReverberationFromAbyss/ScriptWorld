@@ -28,7 +28,7 @@ bool Unit::Init(World *parent, Position pos, int status) {
   return true;
 }
 
-Unit *Unit::Create(World *parent, Position pos) {
+Unit **Unit::Create(World *parent, Position pos) {
   auto tmp = (Unit **)lua::lua_newuserdata(s_luaVM_, sizeof(Unit));
   *tmp = new Unit();
   if (!(*tmp)->Init(parent, pos)) {
@@ -40,7 +40,7 @@ Unit *Unit::Create(World *parent, Position pos) {
 
   luaL_getmetafield(s_luaVM_, Lua_Globalsindex, "scriptWorld.unit");
   lua_setmetatable(s_luaVM_, -2);
-  return *tmp;
+  return tmp;
 }
 
 /**
@@ -65,16 +65,28 @@ bool Unit::InitLuaVM(lua_State *L) {
 }
 
 int Unit::GetCurrentStatus(void) { return m_currentStatus_; }
-
 void Unit::SetCurrentStatus(int status) { m_currentStatus_ = status; }
-
 Position Unit::GetPosition(void) { return m_pos_; }
-
-void Unit::EvaluateNextStatus(void) { return; }
-
-void Unit::ForwardStatus(void) { return; }
-
 World *Unit::GetParent(void) { return m_parent_; }
+
+void EvaluateLua(void);
+
+void Unit::EvaluateNextStatus(void) {
+  lua_getglobal(s_luaVM_, "nextStatus");
+  lua_pcall(s_luaVM_, 1, 1, 0);
+  auto status = lua_tonumber(s_luaVM_, -1);
+  lua_pop(s_luaVM_, 1);
+  m_nextStatus_ = status;
+
+  return;
+}
+
+void Unit::ForwardStatus(void) {
+  m_currentStatus_ = m_nextStatus_;
+  m_nextStatus_ = 0;
+
+  return;
+}
 
 export namespace LuaBinding {
 
@@ -169,6 +181,7 @@ int luaopen_unit(lua_State *L) {
   lua_setfield(L, Lua_Globalsindex, "scriptworld.unit");
 
   luaL_register(L, "scriptWorld", lib_f);
+
   return 1;
 }
 

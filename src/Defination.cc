@@ -46,7 +46,7 @@ private:
   static lua::lua_State *s_luaVM_;
 
   int m_currentStatus_{0};
-  int m_nextStatus{0};
+  int m_nextStatus_{0};
 
 public:
   /// Methods
@@ -61,7 +61,7 @@ public:
   Unit &operator=(Unit &&obj) = default;
   Unit &operator=(const Unit &obj) = default;
 
-  static Unit *Create(World *parent, Position pos);
+  static Unit **Create(World *parent, Position pos);
 
   bool Init(void) override;
   bool Init(World *parent, Position pos, int status = 0);
@@ -83,7 +83,7 @@ class World final : public mul_std::IObject::__I_Object_ {
   /// Variable & Type
 protected:
 private:
-  mul_std::IEnumerable::Array<Unit *, 10, 10> m_map_;
+  mul_std::IEnumerable::Array<Unit **, 10, 10> m_map_;
   Position m_mapScale_{Position(10, 10)};
 
 public:
